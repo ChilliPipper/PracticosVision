@@ -1,19 +1,19 @@
-import random
+def palpitoquiniela(nroChances):
+	import random
+	print("A ver si andás bien para la quiniela.")
+	numeroaleatorio = random.randint(0, 100)
+	intentos = 1
+	print("Adivina el número entre 1 y 100 para ganarte un alcohol en gel:")
+	while intentos <= nroChances:
+		palpito = int(input())
+		if palpito == numeroaleatorio:
+			print("Andás con suerte!! . Te fueron ", intentos, " intentos para adivinarlo")
+			break
+		else:
+			print("No era ese... Te quedan", nroChances-intentos, "intentos")
+			intentos += 1
+	if not intentos < nroChances:
+		print("Sorry, perdiste y encima te contagiaste! El número era", numeroaleatorio)
 
-print("A ver si andás bien para la quiniela.")
-numeroaleatorio = random.randint(1, 10)
-intentos = 0
 
-print("Adivina el número entre 1 y 100 para ganarte un alcohol en gel:")
-
-while intentos < 10:
-	palpito = int(input())
-	if palpito == numeroaleatorio:
-		print("Andás con suerte!! . Te fueron ", intentos+1, " intentos para adivinarlo")
-		break
-	else:
-		print("No era ese... Te quedan", 9-intentos, "intentos")
-	intentos += 1
-  
-if not intentos < 10:
-	print("Sorry, perdiste y encima te contagiaste! El número era", numeroaleatorio)
+palpitoquiniela(5)
