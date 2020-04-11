@@ -1,0 +1,20 @@
+import numpy as np
+import cv2
+import math
+
+img = cv2.imread('30stm.jpg')
+height = img.shape[0]
+width = img.shape[1]
+
+def deformarimagen(img, tx, ty, angulo):
+	angulo = np.deg2rad(angulo)  # angulo en radianes
+	matriz = np.float32([[math.cos(angulo), math.sin(angulo),tx],[-math.sin(angulo), math.cos(angulo), ty]])
+	deformacion = cv2.warpAffine(img, matriz, (width, height))
+	return deformacion
+
+while True:
+	resultadofinal = deformarimagen(img, 1000, 15, 290)
+	cv2.imshow('30stm.jpg', resultadofinal)
+	cv2.waitKey(0)
+	cv2.destroyAllWindows()
+	break
