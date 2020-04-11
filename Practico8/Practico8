@@ -1,0 +1,44 @@
+import cv2
+import numpy as np
+
+clicks, x1, x2, x3, y1, y2, y3 = 0,0,0,0,0,0,0
+
+imagenparacortar = cv2.imread('platino.jpg')
+
+imagenparaincrustar = cv2.imread('30stm200.jpg')
+
+def croppear(event,x,y,flags,param):
+    global x1,x2,x3,y1,y2,y3,clicks
+    if event == cv2.EVENT_LBUTTONDOWN:
+        if clicks == 0:
+            x1, y1 = x, y
+            cv2.circle(imagenparacortar, (x1, y1), 3, (255, 0, 0), 2)
+            clicks = clicks + 1
+        elif clicks == 1:
+            x2, y2 = x, y
+            cv2.circle(imagenparacortar, (x2, y2), 3, (255, 0, 0), 2)
+            clicks = clicks + 1
+        elif clicks == 2:
+            x3, y3 = x, y
+            cv2.circle(imagenparacortar, (x2, y2), 3, (255, 0, 0), 2)
+            clicks = clicks + 1
+
+cv2.namedWindow("TP8/RevillaMarco")
+cv2.setMouseCallback("TP8/RevillaMarco", croppear)
+
+while (True):
+    cv2.imshow("TP8/RevillaMarco", imagenparacortar)
+    if clicks == 3:
+        dst_triangle = np.float32([[x1, y1],[x2, y2],[x3, y3]])
+        src_triangle = np.float32([[0, 0],[imagenparaincrustar.shape[1], 0],[0, imagenparaincrustar.shape[0]]])
+        matriz = cv2.getAffineTransform(src_triangle, dst_triangle)
+        sticker = cv2.warpAffine(imagenparaincrustar, matriz, (imagenparacortar.shape[1], imagenparacortar.shape[0]))
+        imagen_fondo=cv2.bitwise_and(imagenparacortar,imagenparacortar)
+        resultado=cv2.add(imagen_fondo,sticker)
+        cv2.imshow('TP8/RevillaMarco', resultado)
+
+    k = cv2.waitKey(20) & 0xFF
+    # Si presiona q sale el programa
+    if k == ord('q'):
+        cv2.destroyAllWindows()
+        break
