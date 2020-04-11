@@ -1,0 +1,31 @@
+import cv2
+import numpy as np
+
+imagenparacortar = cv2.imread('30stm.jpg')
+def croppear(event,x,y,flags,param):
+    global ix,iy,cropped
+
+    if event == cv2.EVENT_LBUTTONDOWN:
+        ix,iy = x,y
+    elif event == cv2.EVENT_LBUTTONUP:
+
+        cv2.rectangle(imagenparacortar,(ix,iy),(x,y),(0,255,0),5)
+        cropped  = imagenparacortar[iy:y, ix:x]
+
+cv2.namedWindow("TP5/RevillaMarco")
+cv2.setMouseCallback("TP5/RevillaMarco", croppear)
+
+while (True):
+    cv2.imshow("TP5/RevillaMarco", imagenparacortar)
+    k = cv2.waitKey(20) & 0xFF
+    # Si presiona g se guarda la imagen
+    if k == ord('g'):
+        cv2.imwrite('cropped.jpg', cropped)
+    # Si presiona r se borra el rectangulo
+    elif k == ord('r'):
+        imagenparacortar = cv2.imread('30stm.jpg')
+        cv2.imshow('TP5/RevillaMarco', imagenparacortar)
+    # Si presiona q sale el programa
+    elif k == ord('q'):
+        cv2.destroyAllWindows()
+        break
