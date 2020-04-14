@@ -33,7 +33,10 @@ while (True):
         src_triangle = np.float32([[0, 0],[imagenparaincrustar.shape[1], 0],[0, imagenparaincrustar.shape[0]]])
         matriz = cv2.getAffineTransform(src_triangle, dst_triangle)
         sticker = cv2.warpAffine(imagenparaincrustar, matriz, (imagenparacortar.shape[1], imagenparacortar.shape[0]))
-        imagen_fondo=cv2.bitwise_and(imagenparacortar,imagenparacortar)
+        sticker_fondogris = cv2.cvtColor(sticker, cv2.COLOR_BGR2GRAY)
+        ret, mask = cv2.threshold(sticker_fondogris, 0, 255, cv2.THRESH_BINARY)
+        mask_invertida = cv2.bitwise_not(mask)
+        imagen_fondo=cv2.bitwise_and(imagenparacortar,imagenparacortar, mask=mask_invertida)
         resultado=cv2.add(imagen_fondo,sticker)
         cv2.imshow('TP8/RevillaMarco', resultado)
 
